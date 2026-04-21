@@ -1,0 +1,222 @@
+﻿<Page x:Class="CarDelershipWPF.Pages.PageLogin"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Авторизация"
+      Background="#1a1a1a"
+      WindowTitle="CarDelership - Авторизация">
+
+    <Page.Resources>
+        <!-- Стиль для кнопки "Войти" -->
+        <Style x:Key="YellowButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FFC107"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="8" 
+                                BorderThickness="0">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFB300"/>
+                    <Setter Property="RenderTransform">
+                        <Setter.Value>
+                            <ScaleTransform ScaleX="1.02" ScaleY="1.02"/>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#FFA000"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Стиль для кнопки "Выход" -->
+        <Style x:Key="DarkButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#333333"/>
+            <Setter Property="Foreground" Value="#FFC107"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#FFC107"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="8" 
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="1">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFC107"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Стиль для текстовых полей -->
+        <Style TargetType="TextBox">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Background" Value="#2a2a2a"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#FFC107"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CaretBrush" Value="#FFC107"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="8">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="5,0"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="BorderBrush" Value="#FFC107"/>
+                    <Setter Property="BorderThickness" Value="2"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Стиль для PasswordBox -->
+        <Style TargetType="PasswordBox">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Background" Value="#2a2a2a"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#FFC107"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="PasswordBox">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="8">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="5,0"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="BorderBrush" Value="#FFC107"/>
+                    <Setter Property="BorderThickness" Value="2"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Стиль для текстовых меток -->
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
+    </Page.Resources>
+
+    <Grid>
+        <!-- Фоновый градиент -->
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="1,1" StartPoint="0,0">
+                <GradientStop Color="#1a1a1a" Offset="0"/>
+                <GradientStop Color="#2a2a2a" Offset="0.5"/>
+                <GradientStop Color="#1a1a1a" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <Grid Margin="30">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Логотип и название -->
+            <StackPanel Grid.Row="0" Margin="0,0,0,30" HorizontalAlignment="Center">
+                <Border Width="80" Height="80" Background="#FFC107" CornerRadius="40" 
+                        Margin="0,0,0,10" HorizontalAlignment="Center">
+                    <TextBlock Text="C" FontSize="48" FontWeight="Bold" 
+                               Foreground="Black" HorizontalAlignment="Center" 
+                               VerticalAlignment="Center"/>
+                </Border>
+                <TextBlock Text="CarDelership" FontSize="28" FontWeight="Bold" 
+                           Foreground="#FFC107" HorizontalAlignment="Center"/>
+                <TextBlock Text="Управление автодилерством" FontSize="12" 
+                           Foreground="#888" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+            </StackPanel>
+
+            <!-- Форма входа -->
+            <Border Grid.Row="1" Background="#2a2a2a" CornerRadius="15" Padding="25" Margin="0,0,0,20">
+                <StackPanel>
+                    <TextBlock Text="Вход в систему" FontSize="18" FontWeight="Bold" 
+                               Foreground="#FFC107" TextAlignment="Center" Margin="0,0,0,20"/>
+
+                    <!-- Поле логина -->
+                    <TextBlock Text="Логин" Margin="0,0,0,5"/>
+                    <TextBox x:Name="txtLogin" Margin="0,0,0,15" 
+                             ToolTip="Введите ваш логин"/>
+
+                    <!-- Поле пароля -->
+                    <TextBlock Text="Пароль" Margin="0,0,0,5"/>
+                    <PasswordBox x:Name="txtPassword" Margin="0,0,0,15"
+                                 ToolTip="Введите ваш пароль"/>
+
+                    <!-- Кнопки -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,15,0,0">
+                        <Button x:Name="btnLogin" Content="Войти" Style="{StaticResource YellowButtonStyle}"
+                                Click="BtnLogin_Click" Margin="0,0,15,0"/>
+                        <Button x:Name="btnExit" Content="Выход" Style="{StaticResource DarkButtonStyle}"
+                                Click="BtnExit_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Информация о доступе -->
+            <Border Grid.Row="2" Background="#1a1a1a" CornerRadius="10" Padding="15" 
+                    BorderBrush="#FFC107" BorderThickness="1" Margin="0,0,0,20">
+                <StackPanel>
+                    <TextBlock Text="ℹ️ Информация" FontWeight="Bold" Foreground="#FFC107" 
+                               HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                    <TextBlock Text="Доступ в приложение имеют только сотрудники с ролью:" 
+                               FontSize="11" Foreground="#AAA" TextAlignment="Center"/>
+                    <TextBlock Text="• Администратор" FontSize="11" Foreground="#FFC107" 
+                               TextAlignment="Center"/>
+                    <TextBlock Text="• Менеджер" FontSize="11" Foreground="#FFC107" 
+                               TextAlignment="Center"/>
+                </StackPanel>
+            </Border>
+
+           
+        </Grid>
+    </Grid>
+</Page>
