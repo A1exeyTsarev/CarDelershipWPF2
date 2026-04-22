@@ -6,8 +6,9 @@
         xmlns:local="clr-namespace:CarDelershipWPF"
         mc:Ignorable="d"
         Title="CarDelership" Height="600" Width="1000"
-        WindowStartupLocation="CenterScreen">
+        
+        WindowStartupLocation="CenterScreen" Icon="/rio.jpg">
     <Grid>
-        <Frame x:Name="MainFrame" Content="Frame"/>
+        <Frame x:Name="MainFrame" Content="Frame" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>

@@ -179,9 +179,6 @@
     <Compile Include="Pages\Producrts\ProductEditWindow.xaml.cs">
       <DependentUpon>ProductEditWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Producrts\ProductPriceHistoryPage.xaml.cs">
-      <DependentUpon>ProductPriceHistoryPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\Producrts\ProductsPage.xaml.cs">
       <DependentUpon>ProductsPage.xaml</DependentUpon>
     </Compile>
@@ -310,10 +307,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Producrts\ProductPriceHistoryPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Pages\Producrts\ProductsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -379,6 +372,7 @@
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
+    <Resource Include="rio.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Images\" />

@@ -6,7 +6,7 @@
         Background="#2a2a2a">
 
     <Window.Resources>
-        <!-- Стиль для темного ComboBox -->
+        <!-- Стили (оставляем без изменений) -->
         <Style TargetType="ComboBox">
             <Setter Property="Background" Value="#333333"/>
             <Setter Property="Foreground" Value="White"/>
@@ -86,7 +86,6 @@
             </Setter>
         </Style>
 
-        <!-- Стиль для элементов ComboBox -->
         <Style TargetType="ComboBoxItem">
             <Setter Property="Background" Value="#333333"/>
             <Setter Property="Foreground" Value="White"/>
@@ -118,7 +117,6 @@
             </Setter>
         </Style>
 
-        <!-- Стиль для TextBox -->
         <Style TargetType="TextBox">
             <Setter Property="Background" Value="#333333"/>
             <Setter Property="Foreground" Value="White"/>
@@ -145,22 +143,49 @@
             </Setter>
         </Style>
 
-        <!-- Стиль для TextBlock -->
         <Style TargetType="TextBlock">
             <Setter Property="Foreground" Value="#FFC107"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="FontSize" Value="13"/>
         </Style>
 
-        <!-- Стиль для кнопок -->
         <Style TargetType="Button">
             <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        <!-- Стиль для красной кнопки удаления -->
+        <Style x:Key="DeleteButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#DC3545"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="8" 
+                                BorderThickness="0">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#C82333"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </Window.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Grid Margin="20">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -194,7 +219,7 @@
 
             <!-- Название -->
             <TextBlock Grid.Row="2" Grid.Column="0" Text="Название:" Margin="5"/>
-            <TextBox x:Name="txtName" Grid.Row="2" Grid.Column="1" Margin="5"/>
+            <TextBox x:Name="txtName" Grid.Row="2" Grid.Column="1" Margin="5" MaxLength="100"/>
 
             <!-- Модель -->
             <TextBlock Grid.Row="3" Grid.Column="0" Text="Модель:" Margin="5"/>
@@ -208,19 +233,31 @@
 
             <!-- Цена -->
             <TextBlock Grid.Row="5" Grid.Column="0" Text="Цена:" Margin="5"/>
-            <TextBox x:Name="txtPrice" Grid.Row="5" Grid.Column="1" Margin="5"/>
+            <TextBox x:Name="txtPrice" Grid.Row="5" Grid.Column="1" Margin="5"
+                     MaxLength="15"
+                     PreviewTextInput="NumberOnly_PreviewTextInput"
+                     PreviewKeyDown="Number_PreviewKeyDown"/>
 
             <!-- Цена со скидкой -->
             <TextBlock Grid.Row="6" Grid.Column="0" Text="Цена со скидкой:" Margin="5"/>
-            <TextBox x:Name="txtDiscountPrice" Grid.Row="6" Grid.Column="1" Margin="5"/>
+            <TextBox x:Name="txtDiscountPrice" Grid.Row="6" Grid.Column="1" Margin="5"
+                     MaxLength="15"
+                     PreviewTextInput="NumberOnly_PreviewTextInput"
+                     PreviewKeyDown="Number_PreviewKeyDown"/>
 
             <!-- Количество -->
             <TextBlock Grid.Row="7" Grid.Column="0" Text="Количество:" Margin="5"/>
-            <TextBox x:Name="txtQuantity" Grid.Row="7" Grid.Column="1" Margin="5"/>
+            <TextBox x:Name="txtQuantity" Grid.Row="7" Grid.Column="1" Margin="5"
+                     MaxLength="6"
+                     PreviewTextInput="IntegerOnly_PreviewTextInput"
+                     PreviewKeyDown="Number_PreviewKeyDown"/>
 
             <!-- Год выпуска -->
             <TextBlock Grid.Row="8" Grid.Column="0" Text="Год выпуска:" Margin="5"/>
-            <TextBox x:Name="txtYear" Grid.Row="8" Grid.Column="1" Margin="5"/>
+            <TextBox x:Name="txtYear" Grid.Row="8" Grid.Column="1" Margin="5"
+                     MaxLength="4"
+                     PreviewTextInput="IntegerOnly_PreviewTextInput"
+                     PreviewKeyDown="Number_PreviewKeyDown"/>
 
             <!-- Статус -->
             <TextBlock Grid.Row="9" Grid.Column="0" Text="Статус:" Margin="5"/>
@@ -232,6 +269,10 @@
                 <Button x:Name="btnSave" Content="💾 Сохранить" Width="120" Height="40"
                         Background="#FFC107" Foreground="Black" FontWeight="Bold"
                         Click="BtnSave_Click" Margin="0,0,10,0"/>
+                <Button x:Name="btnDelete" Content="🗑 Удалить" Width="120" Height="40"
+                        Style="{StaticResource DeleteButtonStyle}"
+                        Click="BtnDelete_Click" Margin="0,0,10,0"
+                        Visibility="{Binding CanDelete, RelativeSource={RelativeSource AncestorType=Window}, FallbackValue=Collapsed}"/>
                 <Button x:Name="btnCancel" Content="❌ Отмена" Width="120" Height="40"
                         Background="#333" Foreground="#FFC107" FontWeight="Bold"
                         Click="BtnCancel_Click"/>

@@ -3,9 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace CarDelershipWPF.Pages
 {
@@ -17,21 +19,67 @@ namespace CarDelershipWPF.Pages
             LoadProducts();
         }
 
+        // Валидация ввода для поиска
+        private void TxtSearch_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            // Разрешаем только буквы (латиница и кириллица), цифры, пробел и дефис
+            Regex regex = new Regex(@"^[a-zA-Zа-яА-Я0-9\s\-]+$");
+            if (!regex.IsMatch(e.Text))
+            {
+                e.Handled = true; // Блокируем ввод
+                ShowSearchError("Можно использовать только буквы, цифры, пробел и дефис");
+            }
+            else
+            {
+                HideSearchError();
+            }
+        }
+
+        // Блокировка вставки недопустимых символов
+        private void TxtSearch_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control && e.Key == Key.V)
+            {
+                e.Handled = true;
+                string text = Clipboard.GetText();
+                if (!string.IsNullOrEmpty(text))
+                {
+                    // Очищаем текст от недопустимых символов
+                    string cleanText = Regex.Replace(text, @"[^a-zA-Zа-яА-Я0-9\s\-]", "");
+                    if (!string.IsNullOrEmpty(cleanText))
+                    {
+                        int caretIndex = txtSearch.CaretIndex;
+                        txtSearch.Text = txtSearch.Text.Insert(caretIndex, cleanText);
+                        txtSearch.CaretIndex = caretIndex + cleanText.Length;
+                    }
+                }
+            }
+        }
+
+        private void ShowSearchError(string message)
+        {
+            txtSearchError.Text = message;
+            txtSearchError.Visibility = Visibility.Visible;
+            txtSearch.BorderBrush = Brushes.Red;
+            txtSearch.BorderThickness = new Thickness(2);
+        }
+
+        private void HideSearchError()
+        {
+            txtSearchError.Visibility = Visibility.Collapsed;
+            txtSearch.BorderBrush = (SolidColorBrush)new BrushConverter().ConvertFrom("#FFC107");
+            txtSearch.BorderThickness = new Thickness(1);
+        }
+
         // Метод для получения пути к папке с изображениями
         private string GetImageFolderPath()
         {
             try
             {
-                // Получаем путь к папке с программой (bin/Debug)
                 string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-
-                // Поднимаемся из bin/Debug в корень проекта
                 string projectPath = Path.GetFullPath(Path.Combine(baseDirectory, @"..\..\.."));
-
-                // Путь к папке Images
                 string imageFolder = Path.Combine(projectPath, "Images");
 
-                // Если папка не найдена, пробуем альтернативный путь
                 if (!Directory.Exists(imageFolder))
                 {
                     imageFolder = Path.Combine(baseDirectory, "Images");
@@ -50,7 +98,6 @@ namespace CarDelershipWPF.Pages
         {
             try
             {
-                // Если в базе есть имя файла
                 var dbImage = AppConnect.model01.CarImages.FirstOrDefault(i => i.Car_Id == car.Car_Id);
 
                 if (dbImage != null && !string.IsNullOrEmpty(dbImage.ImageName))
@@ -62,7 +109,6 @@ namespace CarDelershipWPF.Pages
                     }
                 }
 
-                // Пробуем найти файл по ID товара
                 string[] extensions = { ".jpg", ".jpeg", ".png", ".bmp" };
                 foreach (string ext in extensions)
                 {
@@ -73,7 +119,6 @@ namespace CarDelershipWPF.Pages
                     }
                 }
 
-                // Заглушка - no_image.jpg
                 string defaultPath = Path.Combine(imageFolder, "no_image.jpg");
                 if (File.Exists(defaultPath))
                 {
@@ -94,13 +139,11 @@ namespace CarDelershipWPF.Pages
             public Cars Car { get; set; }
             public string ImagePath { get; set; }
 
-            // Свойства для привязки в XAML
             public int Car_Id => Car?.Car_Id ?? 0;
             public string Name => Car?.Name ?? "";
             public decimal Price => Car?.Price ?? 0;
             public int Quantity => Car?.Quantity ?? 0;
             public string AvailabilityStatus => Car?.AvailabilityStatus ?? "";
-            public string CurrentPhoto => Car?.CarImages?.FirstOrDefault()?.ImageName ?? "/Images/no_image.jpg";
         }
 
         private void LoadProducts()
@@ -108,17 +151,12 @@ namespace CarDelershipWPF.Pages
             try
             {
                 var products = AppConnect.model01.Cars.ToList();
-
-                // Получаем путь к папке с изображениями
                 string imageFolder = GetImageFolderPath();
-
-                // Создаем список для отображения с картинками
                 List<ProductDisplay> displayList = new List<ProductDisplay>();
 
                 foreach (var product in products)
                 {
                     string imagePath = GetImagePath(product, imageFolder);
-
                     displayList.Add(new ProductDisplay
                     {
                         Car = product,
@@ -133,45 +171,61 @@ namespace CarDelershipWPF.Pages
                 MessageBox.Show($"Ошибка загрузки: {ex.Message}");
             }
         }
-        private void DgProducts_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            if (dgProducts.SelectedItem is ProductDisplay selectedDisplay)
-            {
-                var dialog = new ProductEditWindow(selectedDisplay.Car);
-                dialog.Owner = Window.GetWindow(this);
-                if (dialog.ShowDialog() == true)
-                    LoadProducts();
-            }
-            else
-            {
-                MessageBox.Show("Выберите товар для редактирования!", "Внимание",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-        }
+
         private void UpdateProductsList()
         {
             try
             {
                 var products = AppConnect.model01.Cars.ToList();
 
-                // Поиск по названию
-                if (!string.IsNullOrWhiteSpace(txtSearch?.Text))
+                // Проверка длины поискового запроса
+                string searchText = txtSearch?.Text ?? "";
+
+                if (searchText.Length > 50)
                 {
-                    string searchText = txtSearch.Text.ToLower();
-                    products = products.Where(x =>
-                        x.Name.ToLower().Contains(searchText)).ToList();
+                    ShowSearchError("Поисковый запрос не может превышать 50 символов");
+                    txtSearch.Text = searchText.Substring(0, 50);
+                    txtSearch.CaretIndex = 50;
+                    return;
                 }
 
-                // Получаем путь к папке с изображениями
-                string imageFolder = GetImageFolderPath();
+                // Показываем счетчик символов
+                if (searchText.Length > 0)
+                {
+                    txtSearchCounter.Text = $"{searchText.Length}/50";
+                    txtSearchCounter.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    txtSearchCounter.Visibility = Visibility.Collapsed;
+                }
 
-                // Создаем список для отображения с картинками
+                // Поиск по названию
+                if (!string.IsNullOrWhiteSpace(searchText))
+                {
+                    string searchTextLower = searchText.ToLower();
+                    products = products.Where(x => x.Name.ToLower().Contains(searchTextLower)).ToList();
+
+                    if (products.Count == 0)
+                    {
+                        ShowSearchError("Товары не найдены");
+                    }
+                    else
+                    {
+                        HideSearchError();
+                    }
+                }
+                else
+                {
+                    HideSearchError();
+                }
+
+                string imageFolder = GetImageFolderPath();
                 List<ProductDisplay> displayList = new List<ProductDisplay>();
 
                 foreach (var product in products)
                 {
                     string imagePath = GetImagePath(product, imageFolder);
-
                     displayList.Add(new ProductDisplay
                     {
                         Car = product,
@@ -190,6 +244,22 @@ namespace CarDelershipWPF.Pages
         private void TxtSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             UpdateProductsList();
+        }
+
+        private void DgProducts_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (dgProducts.SelectedItem is ProductDisplay selectedDisplay)
+            {
+                var dialog = new ProductEditWindow(selectedDisplay.Car);
+                dialog.Owner = Window.GetWindow(this);
+                if (dialog.ShowDialog() == true)
+                    LoadProducts();
+            }
+            else
+            {
+                MessageBox.Show("Выберите товар для редактирования!", "Внимание",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
@@ -214,11 +284,6 @@ namespace CarDelershipWPF.Pages
                 MessageBox.Show("Выберите товар для редактирования!", "Внимание",
                     MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-        }
-
-        private void BtnPriceHistory_Click(object sender, RoutedEventArgs e)
-        {
-            AppFrame.FrameMain.Navigate(new ProductPriceHistoryPage());
         }
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)

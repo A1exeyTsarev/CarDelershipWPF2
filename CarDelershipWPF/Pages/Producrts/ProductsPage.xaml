@@ -20,22 +20,30 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBox x:Name="txtSearch" Grid.Column="0" Tag="Поиск..." 
-                         Background="#333" Foreground="White" Height="35" Padding="5"
-                         Margin="0,0,10,0" TextChanged="TxtSearch_TextChanged"/>
+                <StackPanel Grid.Column="0" Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Поиск товаров" Foreground="#FFC107" FontSize="11" 
+                                   Margin="0,0,0,3"/>
+                        <TextBlock x:Name="txtSearchCounter" Foreground="#888" FontSize="10" 
+                                   Margin="10,0,0,3" Visibility="Collapsed"/>
+                    </StackPanel>
+                    <TextBox x:Name="txtSearch" Tag="Введите название..."
+                             Background="#333" Foreground="White" Height="35" Padding="5"
+                             TextChanged="TxtSearch_TextChanged"
+                             PreviewTextInput="TxtSearch_PreviewTextInput"
+                             PreviewKeyDown="TxtSearch_PreviewKeyDown"
+                             MaxLength="50"/>
+                    <TextBlock x:Name="txtSearchError" Foreground="#FF6B6B" FontSize="10" 
+                               Margin="0,2,0,0" Visibility="Collapsed"/>
+                </StackPanel>
 
                 <Button x:Name="btnAdd" Grid.Column="1" Content="➕ Добавить" Width="100" Height="35"
                         Background="#FFC107" Foreground="Black" FontWeight="Bold"
                         Click="BtnAdd_Click" Margin="10,0,0,0" Cursor="Hand"/>
 
-                <Button x:Name="btnHistory" Grid.Column="2" Content="📊 История цен" Width="120" Height="35"
-                        Background="#333" Foreground="#FFC107" FontWeight="Bold"
-                        Click="BtnPriceHistory_Click" Margin="10,0,0,0" Cursor="Hand"/>
-
-                <Button x:Name="btnBack" Grid.Column="3" Content="◀ Назад" Width="100" Height="35"
+                <Button x:Name="btnBack" Grid.Column="2" Content="◀ Назад" Width="100" Height="35"
                         Background="#333" Foreground="#FFC107" FontWeight="Bold"
                         Click="BtnBack_Click" Margin="10,0,0,0" Cursor="Hand"/>
             </Grid>
@@ -50,9 +58,8 @@
                   BorderBrush="#404040"
                   GridLinesVisibility="Horizontal"
                   HeadersVisibility="Column"
-                  CanUserResizeColumns="False"
+                  CanUserResizeColumns="True"
                   CanUserReorderColumns="False"
-                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                   MouseDoubleClick="DgProducts_MouseDoubleClick">
 
             <DataGrid.Resources>

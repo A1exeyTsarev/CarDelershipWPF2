@@ -3,7 +3,9 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Title="Авторизация"
       Background="#1a1a1a"
-      WindowTitle="CarDelership - Авторизация">
+      WindowTitle="CarDelership - Авторизация"
+      Width="1000"
+      Height="600">
 
     <Page.Resources>
         <!-- Стиль для кнопки "Войти" -->
@@ -11,9 +13,9 @@
             <Setter Property="Background" Value="#FFC107"/>
             <Setter Property="Foreground" Value="Black"/>
             <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Height" Value="45"/>
-            <Setter Property="Width" Value="200"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="180"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Template">
@@ -48,9 +50,9 @@
             <Setter Property="Background" Value="#333333"/>
             <Setter Property="Foreground" Value="#FFC107"/>
             <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Height" Value="45"/>
-            <Setter Property="Width" Value="200"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="180"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="BorderBrush" Value="#FFC107"/>
@@ -75,23 +77,24 @@
             </Style.Triggers>
         </Style>
 
-        <!-- Стиль для текстовых полей -->
+        <!-- Стиль для текстовых полей с валидацией -->
         <Style TargetType="TextBox">
-            <Setter Property="Height" Value="40"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="FontSize" Value="13"/>
             <Setter Property="Padding" Value="10,5"/>
             <Setter Property="Background" Value="#2a2a2a"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="BorderBrush" Value="#FFC107"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="CaretBrush" Value="#FFC107"/>
+            <Setter Property="MaxLength" Value="50"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
                         <Border Background="{TemplateBinding Background}" 
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="1"
-                                CornerRadius="8">
+                                CornerRadius="6">
                             <ScrollViewer x:Name="PART_ContentHost" Margin="5,0"/>
                         </Border>
                     </ControlTemplate>
@@ -107,20 +110,21 @@
 
         <!-- Стиль для PasswordBox -->
         <Style TargetType="PasswordBox">
-            <Setter Property="Height" Value="40"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="FontSize" Value="13"/>
             <Setter Property="Padding" Value="10,5"/>
             <Setter Property="Background" Value="#2a2a2a"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="BorderBrush" Value="#FFC107"/>
             <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="MaxLength" Value="50"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="PasswordBox">
                         <Border Background="{TemplateBinding Background}" 
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="1"
-                                CornerRadius="8">
+                                CornerRadius="6">
                             <ScrollViewer x:Name="PART_ContentHost" Margin="5,0"/>
                         </Border>
                     </ControlTemplate>
@@ -137,64 +141,68 @@
         <!-- Стиль для текстовых меток -->
         <Style TargetType="TextBlock">
             <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
+
+        <!-- Стиль для сообщений об ошибках -->
+        <Style x:Key="ErrorTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#FF6B6B"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="Margin" Value="0,2,0,0"/>
+            <Setter Property="Visibility" Value="Collapsed"/>
         </Style>
     </Page.Resources>
 
-    <Grid>
-        <!-- Фоновый градиент -->
-        <Grid.Background>
-            <LinearGradientBrush EndPoint="1,1" StartPoint="0,0">
-                <GradientStop Color="#1a1a1a" Offset="0"/>
-                <GradientStop Color="#2a2a2a" Offset="0.5"/>
-                <GradientStop Color="#1a1a1a" Offset="1"/>
-            </LinearGradientBrush>
-        </Grid.Background>
-
-        <Grid Margin="30">
+    <Grid Background="#1a1a1a">
+        <Grid Margin="20" VerticalAlignment="Center">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <!-- Логотип и название -->
-            <StackPanel Grid.Row="0" Margin="0,0,0,30" HorizontalAlignment="Center">
-                <Border Width="80" Height="80" Background="#FFC107" CornerRadius="40" 
-                        Margin="0,0,0,10" HorizontalAlignment="Center">
-                    <TextBlock Text="C" FontSize="48" FontWeight="Bold" 
+            <StackPanel Grid.Row="0" Margin="0,0,0,20" HorizontalAlignment="Center">
+                <Border Width="60" Height="60" Background="#FFC107" CornerRadius="30" 
+                        Margin="0,0,0,8" HorizontalAlignment="Center">
+                    <TextBlock Text="C" FontSize="36" FontWeight="Bold" 
                                Foreground="Black" HorizontalAlignment="Center" 
                                VerticalAlignment="Center"/>
                 </Border>
-                <TextBlock Text="CarDelership" FontSize="28" FontWeight="Bold" 
+                <TextBlock Text="CarDelership" FontSize="24" FontWeight="Bold" 
                            Foreground="#FFC107" HorizontalAlignment="Center"/>
-                <TextBlock Text="Управление автодилерством" FontSize="12" 
-                           Foreground="#888" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                <TextBlock Text="Управление автодилерством" FontSize="11" 
+                           Foreground="#888" HorizontalAlignment="Center" Margin="0,3,0,0"/>
             </StackPanel>
 
             <!-- Форма входа -->
-            <Border Grid.Row="1" Background="#2a2a2a" CornerRadius="15" Padding="25" Margin="0,0,0,20">
+            <Border Grid.Row="1" Background="#2a2a2a" CornerRadius="12" Padding="20" Margin="0,0,0,15">
                 <StackPanel>
-                    <TextBlock Text="Вход в систему" FontSize="18" FontWeight="Bold" 
-                               Foreground="#FFC107" TextAlignment="Center" Margin="0,0,0,20"/>
+                    <TextBlock Text="Вход в систему" FontSize="16" FontWeight="Bold" 
+                               Foreground="#FFC107" TextAlignment="Center" Margin="0,0,0,15"/>
 
                     <!-- Поле логина -->
-                    <TextBlock Text="Логин" Margin="0,0,0,5"/>
-                    <TextBox x:Name="txtLogin" Margin="0,0,0,15" 
-                             ToolTip="Введите ваш логин"/>
+                    <TextBlock Text="Логин" Margin="0,0,0,4"/>
+                    <TextBox x:Name="txtLogin" Margin="0,0,0,0" 
+                     ToolTip="Введите ваш логин (только латинские буквы и цифры)"
+                     PreviewTextInput="TxtLogin_PreviewTextInput"
+                     TextChanged="TxtLogin_TextChanged"
+                     PreviewKeyDown="TxtLogin_PreviewKeyDown"/>     
+                    <TextBlock x:Name="txtLoginError" Style="{StaticResource ErrorTextBlockStyle}"/>
 
                     <!-- Поле пароля -->
-                    <TextBlock Text="Пароль" Margin="0,0,0,5"/>
-                    <PasswordBox x:Name="txtPassword" Margin="0,0,0,15"
-                                 ToolTip="Введите ваш пароль"/>
+                    <TextBlock Text="Пароль" Margin="0,12,0,4"/>
+                    <PasswordBox x:Name="txtPassword" Margin="0,0,0,0"
+                    ToolTip="Введите ваш пароль (мин. 6 символов, только латинские буквы и цифры)"
+                    PreviewTextInput="TxtPassword_PreviewTextInput"
+                    PreviewKeyDown="TxtPassword_PreviewKeyDown"
+                    PasswordChanged="TxtPassword_PasswordChanged"/>
+                    <TextBlock x:Name="txtPasswordError" Style="{StaticResource ErrorTextBlockStyle}"/>
 
                     <!-- Кнопки -->
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,15,0,0">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,12,0,0">
                         <Button x:Name="btnLogin" Content="Войти" Style="{StaticResource YellowButtonStyle}"
-                                Click="BtnLogin_Click" Margin="0,0,15,0"/>
+                                Click="BtnLogin_Click" Margin="0,0,10,0"/>
                         <Button x:Name="btnExit" Content="Выход" Style="{StaticResource DarkButtonStyle}"
                                 Click="BtnExit_Click"/>
                     </StackPanel>
@@ -202,21 +210,19 @@
             </Border>
 
             <!-- Информация о доступе -->
-            <Border Grid.Row="2" Background="#1a1a1a" CornerRadius="10" Padding="15" 
-                    BorderBrush="#FFC107" BorderThickness="1" Margin="0,0,0,20">
+            <Border Grid.Row="2" Background="#1a1a1a" CornerRadius="8" Padding="10" 
+                    BorderBrush="#FFC107" BorderThickness="1">
                 <StackPanel>
                     <TextBlock Text="ℹ️ Информация" FontWeight="Bold" Foreground="#FFC107" 
-                               HorizontalAlignment="Center" Margin="0,0,0,5"/>
-                    <TextBlock Text="Доступ в приложение имеют только сотрудники с ролью:" 
-                               FontSize="11" Foreground="#AAA" TextAlignment="Center"/>
-                    <TextBlock Text="• Администратор" FontSize="11" Foreground="#FFC107" 
+                               HorizontalAlignment="Center" Margin="0,0,0,4" FontSize="11"/>
+                    <TextBlock Text="Доступ имеют сотрудники с ролью:" 
+                               FontSize="10" Foreground="#AAA" TextAlignment="Center"/>
+                    <TextBlock Text="• Администратор" FontSize="10" Foreground="#FFC107" 
                                TextAlignment="Center"/>
-                    <TextBlock Text="• Менеджер" FontSize="11" Foreground="#FFC107" 
+                    <TextBlock Text="• Менеджер" FontSize="10" Foreground="#FFC107" 
                                TextAlignment="Center"/>
                 </StackPanel>
             </Border>
-
-           
         </Grid>
     </Grid>
 </Page>

@@ -18,10 +18,7 @@ namespace CarDelershipWPF.Pages
             AppFrame.FrameMain.Navigate(new ProductsPage());
         }
 
-        private void BtnPriceHistory_Click(object sender, RoutedEventArgs e)
-        {
-            AppFrame.FrameMain.Navigate(new ProductPriceHistoryPage());
-        }
+        // Удален метод BtnPriceHistory_Click
 
         private void BtnDirectories_Click(object sender, RoutedEventArgs e)
         {

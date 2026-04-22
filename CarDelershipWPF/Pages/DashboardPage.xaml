@@ -30,8 +30,6 @@
                         <TextBlock Text="Товары" FontSize="16" FontWeight="Bold" Foreground="#FFC107" TextAlignment="Center"/>
                         <Button Content="Управление товарами" Background="#FFC107" Foreground="Black" 
                                 FontWeight="Bold" Margin="10,5" Click="BtnProducts_Click" Cursor="Hand"/>
-                        <Button Content="История цен" Background="#333" Foreground="#FFC107" 
-                                Margin="10,5" Click="BtnPriceHistory_Click" Cursor="Hand"/>
                     </StackPanel>
                 </Border>
 
